@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio player</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #0d1117;
+            font-family: Inter;
+            font-size: 16px;
+            color: #ffffff;
+        }
+        .wrapper {
+            position: relative;
+           width: 500px;
+           margin: auto;
+           margin-top: 10vh;
+           
+           box-shadow: 0px 0px 20px 12px #000000;
+        }
+        .image {
+            width: 500px;
+            height: 500px;
+        }
+        .info-wrapper {
+            display: flex;
+            width: 500px;
+            padding: 24px;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: rgba(30, 37, 31, 0.90);
+        }
+        .info {
+            display: flex;
+            padding: 0px 8px 8px 8px;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 8px;
+            align-self: stretch;
+        }
+        .name {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 8px;
+            flex: 1 0 0;
+        }
+        .autor {
+            color: #519c81;
+            text-align: center;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+        .title {
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+        .tool {
+            display: flex;
+            width: 168px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .audios {
+            align-self: stretch;
+        }
+        .times {
+            display: flex;
+            padding: 0px 8px;
+            justify-content: space-between;
+            align-items: flex-start;
+            align-self: stretch;
+        }
+        .time {
+            text-align: right;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+        .current-time {
+            color: #519c81;
+            text-align: left;
+        }
+        footer {
+            background-color: #0c0c0e;
+            color: #ffffff;
+            padding: 20px;
+            font-family: Inter;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+        }
+        footer a {
+            text-decoration: none;
+            color: inherit;
+            transition: color .4s ease-in-out;
+        }
+        hr {
+            margin: 8px 0px;
+        }
+        .flex-btwn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .rss {
+            font-size: 20px;
+            letter-spacing: 2px;
+            margin: 22px 0px;
+        }
+        .play-pause {
+            cursor: pointer;
+        }
+        #progress {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background-color: #ffffff;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        #progress::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 4px solid #519c81;
+            border-radius: 50%;
+            background-color: #ffffff;
+        }
+        .d-none {
+            display: none;
+        }
+        #play:hover, #pause:hover {
+            background-color: #fff;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="image">
+            <img src="giaa.jpg" alt="giaa" width="500" height="500">
+            <img src="giaa600.jpg" alt="giaa600" width="500" height="500" style="display: none;">
+        </div>
+        <div class="info-wrapper">
+            <div class="info">
+                <div class="name">
+                    <div class="autor">God Is An Astronaut</div>
+                    <div class="title">Beyond The Dying Light</div>
+                </div>
+                <div class="tool">
+                    <div onclick="previousSong()" id="previous-song">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M3.59579 24.7331V7.22272L3.59547 7.22112L3.59579 7.21952V7.14432H3.60347C3.62203 6.94374 3.71472 6.75729 3.86344 6.62142C4.01215 6.48555 4.20619 6.41002 4.40763 6.4096C4.41723 6.4096 4.42619 6.41216 4.43547 6.41248H5.89755C5.92027 6.41056 5.94235 6.40576 5.96571 6.40576C6.181 6.40585 6.38744 6.49141 6.53967 6.64364C6.6919 6.79587 6.77746 7.00231 6.77755 7.2176C6.77755 7.25504 6.77147 7.2912 6.76635 7.32736V14.7325L17.4355 8.57248C17.5115 8.49728 17.6079 8.44595 17.7128 8.4248C17.8177 8.40366 17.9264 8.41362 18.0257 8.45347C18.125 8.49332 18.2104 8.56131 18.2716 8.64908C18.3327 8.73686 18.3669 8.84059 18.3699 8.94752H18.3718V13.8272L27.4732 8.57216C27.5493 8.49696 27.6457 8.44563 27.7506 8.42448C27.8554 8.40334 27.9642 8.4133 28.0635 8.45315C28.1627 8.493 28.2482 8.56099 28.3093 8.64876C28.3705 8.73654 28.4047 8.84027 28.4076 8.9472H28.4092V23.0371C28.4091 23.1464 28.3764 23.2531 28.3153 23.3437C28.2542 23.4343 28.1675 23.5046 28.0663 23.5457C27.9651 23.5868 27.8539 23.5968 27.7469 23.5745C27.64 23.5521 27.5421 23.4984 27.4659 23.4202L18.3718 18.1696V23.0374C18.3716 23.1467 18.3389 23.2534 18.2778 23.344C18.2168 23.4346 18.1301 23.5049 18.0289 23.546C17.9276 23.5871 17.8164 23.5972 17.7095 23.5748C17.6026 23.5524 17.5047 23.4987 17.4284 23.4205L6.76635 17.2646V24.7469H6.76219C6.76283 24.7594 6.76603 24.7709 6.76603 24.7834C6.76594 24.9983 6.68059 25.2045 6.5287 25.3566C6.3768 25.5088 6.17077 25.5945 5.95579 25.5949H4.40315V25.5872C4.29654 25.5872 4.19097 25.5662 4.09247 25.5254C3.99397 25.4846 3.90448 25.4248 3.82909 25.3494C3.75371 25.274 3.6939 25.1845 3.65311 25.086C3.61231 24.9875 3.59131 24.882 3.59131 24.7754C3.59163 24.7606 3.59515 24.7472 3.59579 24.7331Z" fill="url(#paint0_linear_3435_135)"/>
+                            <defs>
+                              <linearGradient id="paint0_linear_3435_135" x1="16.0003" y1="6.40576" x2="16.0003" y2="25.5949" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#58A589"/>
+                                <stop offset="1" stop-color="#023422"/>
+                              </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div onclick="playPause()" id="ctrlIcon" class="play-pause">
+                        <svg id="play" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+                            <path d="M28 4.6665C23.3851 4.6665 18.8738 6.03498 15.0367 8.59888C11.1995 11.1628 8.20883 14.8069 6.44278 19.0706C4.67674 23.3342 4.21466 28.0257 5.11498 32.5519C6.0153 37.0782 8.23759 41.2358 11.5008 44.499C14.764 47.7622 18.9216 49.9845 23.4479 50.8848C27.9741 51.7851 32.6656 51.3231 36.9293 49.557C41.1929 47.791 44.837 44.8003 47.4009 40.9631C49.9648 37.126 51.3333 32.6147 51.3333 27.9998C51.3333 24.9357 50.7298 21.9015 49.5572 19.0706C48.3845 16.2396 46.6658 13.6674 44.4991 11.5007C42.3324 9.33398 39.7602 7.61526 36.9293 6.44265C34.0983 5.27004 31.0641 4.6665 28 4.6665ZM23.3333 38.4998V17.4998L37.3333 27.9998L23.3333 38.4998Z" fill="url(#paint0_linear_3435_21)"/>
+                            <defs>
+                              <linearGradient id="paint0_linear_3435_21" x1="28" y1="4.6665" x2="28" y2="51.3332" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#58A589"/>
+                                <stop offset="1" stop-color="#023422"/>
+                              </linearGradient>
+                            </defs>
+                        </svg>
+                        <svg id="pause" class="d-none" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+                            <path d="M11.79 44.7832C9.56145 42.6308 7.78386 40.0561 6.56098 37.2093C5.33811 34.3626 4.69443 31.3008 4.66751 28.2026C4.64058 25.1044 5.23096 22.0319 6.40418 19.1643C7.5774 16.2967 9.30997 13.6915 11.5008 11.5007C13.6916 9.30985 16.2968 7.57728 19.1644 6.40406C22.032 5.23084 25.1045 4.64046 28.2027 4.66738C31.3009 4.69431 34.3627 5.33799 37.2095 6.56086C40.0562 7.78374 42.6309 9.56132 44.7834 11.7899C49.0337 16.1906 51.3856 22.0847 51.3324 28.2026C51.2793 34.3205 48.8253 40.1728 44.4991 44.499C40.1729 48.8252 34.3206 51.2791 28.2027 51.3323C22.0848 51.3855 16.1907 49.0336 11.79 44.7832ZM21.2867 18.9532V37.6199H25.9534V18.9532H21.2867ZM30.62 18.9532V37.6199H35.2867V18.9532H30.62Z" fill="url(#paint0_linear_3435_23)"/>
+                            <defs>
+                              <linearGradient id="paint0_linear_3435_23" x1="28" y1="4.6665" x2="28" y2="51.3332" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#58A589"/>
+                                <stop offset="1" stop-color="#023422"/>
+                              </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div onclick="nextSong()" id="next-song">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <path d="M28.4048 24.7331V7.22272L28.4051 7.22112L28.4048 7.21952V7.14432H28.3971C28.3786 6.94374 28.2859 6.75729 28.1372 6.62142C27.9884 6.48555 27.7944 6.41002 27.593 6.4096C27.5834 6.4096 27.5744 6.41216 27.5651 6.41248H26.103C26.0803 6.41056 26.0582 6.40576 26.0349 6.40576C25.8196 6.40585 25.6132 6.49141 25.4609 6.64364C25.3087 6.79587 25.2231 7.00231 25.223 7.2176C25.223 7.25504 25.2291 7.2912 25.2343 7.32736V14.7325L14.5651 8.57248C14.4891 8.49728 14.3927 8.44595 14.2878 8.4248C14.1829 8.40366 14.0742 8.41362 13.9749 8.45347C13.8756 8.49332 13.7902 8.56131 13.729 8.64908C13.6679 8.73686 13.6337 8.84059 13.6307 8.94752H13.6288V13.8272L4.52737 8.57216C4.45129 8.49696 4.3549 8.44563 4.25003 8.42448C4.14517 8.40334 4.03641 8.4133 3.93714 8.45315C3.83786 8.493 3.7524 8.56099 3.69125 8.64876C3.6301 8.73654 3.59594 8.84027 3.59297 8.9472H3.59137V23.0371C3.59152 23.1464 3.62423 23.2531 3.68531 23.3437C3.74639 23.4343 3.83308 23.5046 3.9343 23.5457C4.03553 23.5868 4.14671 23.5968 4.25366 23.5745C4.3606 23.5521 4.45845 23.4984 4.53473 23.4202L13.6288 18.1696V23.0374C13.629 23.1467 13.6617 23.2534 13.7227 23.344C13.7838 23.4346 13.8705 23.5049 13.9717 23.546C14.073 23.5871 14.1842 23.5972 14.2911 23.5748C14.398 23.5524 14.4959 23.4987 14.5722 23.4205L25.2343 17.2646V24.7469H25.2384C25.2378 24.7594 25.2346 24.7709 25.2346 24.7834C25.2347 24.9983 25.32 25.2045 25.4719 25.3566C25.6238 25.5088 25.8298 25.5945 26.0448 25.5949H27.5974V25.5872C27.7041 25.5872 27.8096 25.5662 27.9081 25.5254C28.0066 25.4846 28.0961 25.4248 28.1715 25.3494C28.2469 25.274 28.3067 25.1845 28.3475 25.086C28.3883 24.9875 28.4093 24.882 28.4093 24.7754C28.409 24.7606 28.4054 24.7472 28.4048 24.7331Z" fill="url(#paint0_linear_3435_141)"/>
+                            <defs>
+                              <linearGradient id="paint0_linear_3435_141" x1="16.0003" y1="6.40576" x2="16.0003" y2="25.5949" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#58A589"/>
+                                <stop offset="1" stop-color="#023422"/>
+                              </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audios">
+                <audio id="song">
+                    <source src="God Is An Astronaut - Beyond The Dying Light.mp3" type="audio/mpeg">
+                </audio>
+                <input type="range" id="progress" min="0" max="233.717551" value="0" onchange="changeProgressBar()">
+
+                <audio src="God Is An Astronaut - Forever Lost.mp3"></audio>
+            </div>
+
+            <script>
+                let progress = document.getElementById("progress");
+                let song = document.getElementById("song");
+                let ctrlIcon = document.getElementById("ctrlIcon");
+                let pause = document.getElementById("pause");
+                let play = document.getElementById("play");
+                song.onloadedmetadata = function() {
+                    progress.max = song.duration;
+                    progress.value = song.currentTime;
+                }
+                function playPause() {
+                    if (ctrlIcon.classList.contains("pause")) {
+                        song.pause();
+                        play.classList.remove("d-none");
+                        pause.classList.add("d-none");
+                        ctrlIcon.classList.remove("pause");
+                        
+                    } else {
+                        song.play();
+                        pause.classList.remove("d-none");
+                        play.classList.add("d-none");
+                        ctrlIcon.classList.add("pause");
+                    }
+                }
+
+                if (song.play()) {
+                    setInterval(()=>{
+                        progress.value = song.currentTime;
+                    }, 500)
+                }
+
+                progress.onchange = function () {
+                    song.play();
+                    song.currentTime = progress.value;
+                    pause.classList.remove("d-none");
+                    play.classList.add("d-none");
+                    ctrlIcon.classList.add("pause");
+                }
+                console.log('Вёрстка +10\nКнопка Play/Pause +10\nПрогресс-бар +10\nOформлениe +10')
+
+            </script>
+            
+            <div class="times">
+                <div class="time current-time">Current time</div>
+                <div class="time">Duration time</div>
+            </div>
+            
+            <div style="display: none;">
+                <input type="range" id="progress-bar1" min="0" max="233.717551" value="0" onchange="changeProgressBar()">
+                <input type="range" id="progress-bar2" min="0" max="233.717551" value="0" onchange="changeProgressBar()">
+            </div>
+        </div>
+        <footer>
+            <hr>
+            <div class="flex-btwn rss">
+                <p>2023</p>
+                <p><a href="https://rs.school/js-stage0/">The Rolling Scopes School</a></p>
+                <p><a href="https://github.com/IrinaGrom">IrinaGrom</a></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
