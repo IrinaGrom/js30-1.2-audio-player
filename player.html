@@ -4,283 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio player</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #0d1117;
-            font-family: Inter;
-            font-size: 16px;
-            color: #ffffff;
-        }
-        .wrapper {
-            position: relative;
-           width: 500px;
-           margin: auto;
-           margin-top: 10vh;
-           
-           box-shadow: 0px 0px 20px 12px #000000;
-        }
-        .image {
-            width: 500px;
-            height: 500px;
-        }
-        .info-wrapper {
-            display: flex;
-            width: 500px;
-            padding: 24px;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            background: rgba(30, 37, 31, 0.90);
-        }
-        .info {
-            display: flex;
-            padding: 0px 8px 8px 8px;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 8px;
-            align-self: stretch;
-        }
-        .name {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 8px;
-            flex: 1 0 0;
-        }
-        .autor {
-            color: #519c81;
-            text-align: center;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-        }
-        .title {
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-        }
-        .tool {
-            display: flex;
-            width: 168px;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .audios {
-            align-self: stretch;
-        }
-        .times {
-            display: flex;
-            padding: 0px 8px;
-            justify-content: space-between;
-            align-items: flex-start;
-            align-self: stretch;
-        }
-        .time {
-            text-align: right;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-        }
-        .current-time {
-            color: #519c81;
-            text-align: left;
-        }
-        footer {
-            background-color: #0c0c0e;
-            color: #ffffff;
-            padding: 20px;
-            font-family: Inter;
-            font-size: 15px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 20px;
-        }
-        footer a {
-            text-decoration: none;
-            color: inherit;
-            transition: color .4s ease-in-out;
-        }
-        hr {
-            margin: 8px 0px;
-        }
-        .flex-btwn {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        .rss {
-            font-size: 20px;
-            letter-spacing: 2px;
-            margin: 22px 0px;
-        }
-        .play-pause {
-            cursor: pointer;
-        }
-        #progress {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            background-color: #ffffff;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 20px 0;
-        }
-        #progress::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 22px;
-            height: 22px;
-            border: 4px solid #519c81;
-            border-radius: 50%;
-            background-color: #ffffff;
-        }
-        .d-none {
-            display: none;
-        }
-        #play:hover, #pause:hover {
-            background-color: #fff;
-            border-radius: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="player.css">
 </head>
 <body>
     <div class="wrapper">
         <div class="image">
-            <img src="giaa.jpg" alt="giaa" width="500" height="500">
-            <img src="giaa600.jpg" alt="giaa600" width="500" height="500" style="display: none;">
+            <img class="cover" src="giaa.jpg" alt="giaa">
         </div>
         <div class="info-wrapper">
             <div class="info">
                 <div class="name">
+                    <div class="now-playing"></div>
                     <div class="autor">God Is An Astronaut</div>
                     <div class="title">Beyond The Dying Light</div>
                 </div>
-                <div class="tool">
-                    <div onclick="previousSong()" id="previous-song">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                            <path d="M3.59579 24.7331V7.22272L3.59547 7.22112L3.59579 7.21952V7.14432H3.60347C3.62203 6.94374 3.71472 6.75729 3.86344 6.62142C4.01215 6.48555 4.20619 6.41002 4.40763 6.4096C4.41723 6.4096 4.42619 6.41216 4.43547 6.41248H5.89755C5.92027 6.41056 5.94235 6.40576 5.96571 6.40576C6.181 6.40585 6.38744 6.49141 6.53967 6.64364C6.6919 6.79587 6.77746 7.00231 6.77755 7.2176C6.77755 7.25504 6.77147 7.2912 6.76635 7.32736V14.7325L17.4355 8.57248C17.5115 8.49728 17.6079 8.44595 17.7128 8.4248C17.8177 8.40366 17.9264 8.41362 18.0257 8.45347C18.125 8.49332 18.2104 8.56131 18.2716 8.64908C18.3327 8.73686 18.3669 8.84059 18.3699 8.94752H18.3718V13.8272L27.4732 8.57216C27.5493 8.49696 27.6457 8.44563 27.7506 8.42448C27.8554 8.40334 27.9642 8.4133 28.0635 8.45315C28.1627 8.493 28.2482 8.56099 28.3093 8.64876C28.3705 8.73654 28.4047 8.84027 28.4076 8.9472H28.4092V23.0371C28.4091 23.1464 28.3764 23.2531 28.3153 23.3437C28.2542 23.4343 28.1675 23.5046 28.0663 23.5457C27.9651 23.5868 27.8539 23.5968 27.7469 23.5745C27.64 23.5521 27.5421 23.4984 27.4659 23.4202L18.3718 18.1696V23.0374C18.3716 23.1467 18.3389 23.2534 18.2778 23.344C18.2168 23.4346 18.1301 23.5049 18.0289 23.546C17.9276 23.5871 17.8164 23.5972 17.7095 23.5748C17.6026 23.5524 17.5047 23.4987 17.4284 23.4205L6.76635 17.2646V24.7469H6.76219C6.76283 24.7594 6.76603 24.7709 6.76603 24.7834C6.76594 24.9983 6.68059 25.2045 6.5287 25.3566C6.3768 25.5088 6.17077 25.5945 5.95579 25.5949H4.40315V25.5872C4.29654 25.5872 4.19097 25.5662 4.09247 25.5254C3.99397 25.4846 3.90448 25.4248 3.82909 25.3494C3.75371 25.274 3.6939 25.1845 3.65311 25.086C3.61231 24.9875 3.59131 24.882 3.59131 24.7754C3.59163 24.7606 3.59515 24.7472 3.59579 24.7331Z" fill="url(#paint0_linear_3435_135)"/>
-                            <defs>
-                              <linearGradient id="paint0_linear_3435_135" x1="16.0003" y1="6.40576" x2="16.0003" y2="25.5949" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#58A589"/>
-                                <stop offset="1" stop-color="#023422"/>
-                              </linearGradient>
-                            </defs>
+                <div class="controls">
+                    <div class="volume-control">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M19.7273 4.76982C19.7273 4.63364 19.6889 4.4999 19.6161 4.38223C19.5432 4.26456 19.4384 4.16719 19.3125 4.10005C19.1865 4.03291 19.0439 3.9984 18.8992 4.00006C18.7544 4.00171 18.6127 4.03946 18.4885 4.10945L10.5015 8.61502H7.45455C6.80356 8.61502 6.17924 8.85829 5.71892 9.2913C5.2586 9.72432 5 10.3116 5 10.924V17.0766C5 18.3543 6.09964 19.3856 7.45455 19.3856H10.5015L18.4869 23.8896C18.6111 23.96 18.753 23.9981 18.898 23.9999C19.043 24.0018 19.1859 23.9674 19.3121 23.9002C19.4383 23.833 19.5432 23.7354 19.6162 23.6176C19.6891 23.4997 19.7275 23.3657 19.7273 23.2293V4.76982ZM21.3636 11.6967V16.3147H23V11.6967H21.3636Z" fill="#519C81"/>
+                        </svg>
+                        <input class="bar volume-bar" id="volume-bar" type="range" min="1" max="100" value="50" onchange="setVolume()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                            <path d="M16.4 4.76982C16.4 4.63364 16.3625 4.4999 16.2913 4.38223C16.22 4.26456 16.1176 4.16719 15.9944 4.10005C15.8713 4.03291 15.7318 3.9984 15.5903 4.00006C15.4488 4.00171 15.3102 4.03946 15.1888 4.10945L7.3792 8.61502H4.4C3.76348 8.61502 3.15303 8.85829 2.70294 9.2913C2.25286 9.72432 2 10.3116 2 10.924L2 17.0766C2 18.3543 3.0752 19.3856 4.4 19.3856H7.3792L15.1872 23.8896C15.3087 23.96 15.4474 23.9981 15.5891 23.9999C15.7309 24.0018 15.8706 23.9674 15.994 23.9002C16.1174 23.833 16.22 23.7354 16.2914 23.6176C16.3627 23.4997 16.4002 23.3657 16.4 23.2293V4.76982ZM24.4 5.53947V22.4719H26V5.53947H24.4ZM21.2 8.6181V19.3933H22.8V8.6181H21.2ZM18 11.6967V16.3147H19.6V11.6967H18Z" fill="#519C81"/>
                         </svg>
                     </div>
-                    <div onclick="playPause()" id="ctrlIcon" class="play-pause">
-                        <svg id="play" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
-                            <path d="M28 4.6665C23.3851 4.6665 18.8738 6.03498 15.0367 8.59888C11.1995 11.1628 8.20883 14.8069 6.44278 19.0706C4.67674 23.3342 4.21466 28.0257 5.11498 32.5519C6.0153 37.0782 8.23759 41.2358 11.5008 44.499C14.764 47.7622 18.9216 49.9845 23.4479 50.8848C27.9741 51.7851 32.6656 51.3231 36.9293 49.557C41.1929 47.791 44.837 44.8003 47.4009 40.9631C49.9648 37.126 51.3333 32.6147 51.3333 27.9998C51.3333 24.9357 50.7298 21.9015 49.5572 19.0706C48.3845 16.2396 46.6658 13.6674 44.4991 11.5007C42.3324 9.33398 39.7602 7.61526 36.9293 6.44265C34.0983 5.27004 31.0641 4.6665 28 4.6665ZM23.3333 38.4998V17.4998L37.3333 27.9998L23.3333 38.4998Z" fill="url(#paint0_linear_3435_21)"/>
-                            <defs>
-                              <linearGradient id="paint0_linear_3435_21" x1="28" y1="4.6665" x2="28" y2="51.3332" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#58A589"/>
-                                <stop offset="1" stop-color="#023422"/>
-                              </linearGradient>
-                            </defs>
-                        </svg>
-                        <svg id="pause" class="d-none" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
-                            <path d="M11.79 44.7832C9.56145 42.6308 7.78386 40.0561 6.56098 37.2093C5.33811 34.3626 4.69443 31.3008 4.66751 28.2026C4.64058 25.1044 5.23096 22.0319 6.40418 19.1643C7.5774 16.2967 9.30997 13.6915 11.5008 11.5007C13.6916 9.30985 16.2968 7.57728 19.1644 6.40406C22.032 5.23084 25.1045 4.64046 28.2027 4.66738C31.3009 4.69431 34.3627 5.33799 37.2095 6.56086C40.0562 7.78374 42.6309 9.56132 44.7834 11.7899C49.0337 16.1906 51.3856 22.0847 51.3324 28.2026C51.2793 34.3205 48.8253 40.1728 44.4991 44.499C40.1729 48.8252 34.3206 51.2791 28.2027 51.3323C22.0848 51.3855 16.1907 49.0336 11.79 44.7832ZM21.2867 18.9532V37.6199H25.9534V18.9532H21.2867ZM30.62 18.9532V37.6199H35.2867V18.9532H30.62Z" fill="url(#paint0_linear_3435_23)"/>
-                            <defs>
-                              <linearGradient id="paint0_linear_3435_23" x1="28" y1="4.6665" x2="28" y2="51.3332" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#58A589"/>
-                                <stop offset="1" stop-color="#023422"/>
-                              </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div onclick="nextSong()" id="next-song">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                            <path d="M28.4048 24.7331V7.22272L28.4051 7.22112L28.4048 7.21952V7.14432H28.3971C28.3786 6.94374 28.2859 6.75729 28.1372 6.62142C27.9884 6.48555 27.7944 6.41002 27.593 6.4096C27.5834 6.4096 27.5744 6.41216 27.5651 6.41248H26.103C26.0803 6.41056 26.0582 6.40576 26.0349 6.40576C25.8196 6.40585 25.6132 6.49141 25.4609 6.64364C25.3087 6.79587 25.2231 7.00231 25.223 7.2176C25.223 7.25504 25.2291 7.2912 25.2343 7.32736V14.7325L14.5651 8.57248C14.4891 8.49728 14.3927 8.44595 14.2878 8.4248C14.1829 8.40366 14.0742 8.41362 13.9749 8.45347C13.8756 8.49332 13.7902 8.56131 13.729 8.64908C13.6679 8.73686 13.6337 8.84059 13.6307 8.94752H13.6288V13.8272L4.52737 8.57216C4.45129 8.49696 4.3549 8.44563 4.25003 8.42448C4.14517 8.40334 4.03641 8.4133 3.93714 8.45315C3.83786 8.493 3.7524 8.56099 3.69125 8.64876C3.6301 8.73654 3.59594 8.84027 3.59297 8.9472H3.59137V23.0371C3.59152 23.1464 3.62423 23.2531 3.68531 23.3437C3.74639 23.4343 3.83308 23.5046 3.9343 23.5457C4.03553 23.5868 4.14671 23.5968 4.25366 23.5745C4.3606 23.5521 4.45845 23.4984 4.53473 23.4202L13.6288 18.1696V23.0374C13.629 23.1467 13.6617 23.2534 13.7227 23.344C13.7838 23.4346 13.8705 23.5049 13.9717 23.546C14.073 23.5871 14.1842 23.5972 14.2911 23.5748C14.398 23.5524 14.4959 23.4987 14.5722 23.4205L25.2343 17.2646V24.7469H25.2384C25.2378 24.7594 25.2346 24.7709 25.2346 24.7834C25.2347 24.9983 25.32 25.2045 25.4719 25.3566C25.6238 25.5088 25.8298 25.5945 26.0448 25.5949H27.5974V25.5872C27.7041 25.5872 27.8096 25.5662 27.9081 25.5254C28.0066 25.4846 28.0961 25.4248 28.1715 25.3494C28.2469 25.274 28.3067 25.1845 28.3475 25.086C28.3883 24.9875 28.4093 24.882 28.4093 24.7754C28.409 24.7606 28.4054 24.7472 28.4048 24.7331Z" fill="url(#paint0_linear_3435_141)"/>
-                            <defs>
-                              <linearGradient id="paint0_linear_3435_141" x1="16.0003" y1="6.40576" x2="16.0003" y2="25.5949" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#58A589"/>
-                                <stop offset="1" stop-color="#023422"/>
-                              </linearGradient>
-                            </defs>
-                        </svg>
+                    <div class="tool">
+                        <div onclick="prevTrack()">
+                            <svg id="previous" xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
+                                <path d="M11.5042 14.7759V31.2664L11.5039 31.2679L11.5042 31.2694V31.3402H11.5113C11.5285 31.5291 11.6144 31.7047 11.7522 31.8327C11.89 31.9606 12.0698 32.0318 12.2565 32.0322C12.2654 32.0322 12.2737 32.0298 12.2823 32.0295H13.6373C13.6584 32.0313 13.6788 32.0358 13.7005 32.0358C13.9 32.0357 14.0913 31.9551 14.2324 31.8118C14.3735 31.6684 14.4528 31.474 14.4528 31.2712C14.4528 31.236 14.4472 31.2019 14.4425 31.1679V24.1941L24.3301 29.9953C24.4006 30.0661 24.4899 30.1144 24.5871 30.1343C24.6843 30.1543 24.7851 30.1449 24.8771 30.1073C24.9691 30.0698 25.0483 30.0058 25.1049 29.9231C25.1616 29.8405 25.1933 29.7428 25.196 29.6421H25.1978V25.0466L33.6326 29.9956C33.7031 30.0664 33.7924 30.1147 33.8896 30.1346C33.9868 30.1546 34.0876 30.1452 34.1796 30.1076C34.2716 30.0701 34.3508 30.0061 34.4074 29.9234C34.4641 29.8408 34.4958 29.7431 34.4985 29.6424H34.5V16.3731C34.4999 16.2702 34.4695 16.1697 34.4129 16.0844C34.3563 15.9991 34.276 15.9329 34.1822 15.8942C34.0884 15.8555 33.9853 15.846 33.8862 15.8671C33.7871 15.8881 33.6964 15.9387 33.6257 16.0124L25.1978 20.9571V16.3728C25.1977 16.2699 25.1674 16.1694 25.1107 16.0841C25.0541 15.9988 24.9738 15.9326 24.88 15.8939C24.7862 15.8552 24.6831 15.8457 24.584 15.8668C24.4849 15.8878 24.3942 15.9384 24.3235 16.0121L14.4425 21.8094V14.763H14.4386C14.4392 14.7512 14.4422 14.7404 14.4422 14.7286C14.4421 14.5261 14.363 14.332 14.2222 14.1887C14.0815 14.0454 13.8905 13.9648 13.6913 13.9644H12.2524V13.9716C12.1536 13.9716 12.0557 13.9914 11.9645 14.0298C11.8732 14.0682 11.7902 14.1245 11.7204 14.1955C11.6505 14.2665 11.5951 14.3508 11.5573 14.4436C11.5195 14.5363 11.5 14.6357 11.5 14.7361C11.5003 14.75 11.5036 14.7627 11.5042 14.7759Z" fill="url(#paint0_linear_3449_167)"/>
+                                <defs>
+                                  <linearGradient id="paint0_linear_3449_167" x1="23" y1="13.9644" x2="23" y2="32.0358" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#58A589"/>
+                                    <stop offset="1" stop-color="#023422"/>
+                                  </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div id="play-pause-btn" onclick="playPause()" class="play-pause">
+                            <svg id="play" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+                                <path d="M28 4.6665C23.3851 4.6665 18.8738 6.03498 15.0367 8.59888C11.1995 11.1628 8.20883 14.8069 6.44278 19.0706C4.67674 23.3342 4.21466 28.0257 5.11498 32.5519C6.0153 37.0782 8.23759 41.2358 11.5008 44.499C14.764 47.7622 18.9216 49.9845 23.4479 50.8848C27.9741 51.7851 32.6656 51.3231 36.9293 49.557C41.1929 47.791 44.837 44.8003 47.4009 40.9631C49.9648 37.126 51.3333 32.6147 51.3333 27.9998C51.3333 24.9357 50.7298 21.9015 49.5572 19.0706C48.3845 16.2396 46.6658 13.6674 44.4991 11.5007C42.3324 9.33398 39.7602 7.61526 36.9293 6.44265C34.0983 5.27004 31.0641 4.6665 28 4.6665ZM23.3333 38.4998V17.4998L37.3333 27.9998L23.3333 38.4998Z" fill="url(#paint0_linear_3435_21)"/>
+                                <defs>
+                                  <linearGradient id="paint0_linear_3435_21" x1="28" y1="4.6665" x2="28" y2="51.3332" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#58A589"/>
+                                    <stop offset="1" stop-color="#023422"/>
+                                  </linearGradient>
+                                </defs>
+                            </svg>
+                            <svg id="pause" class="d-none" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+                                <path d="M11.79 44.7832C9.56145 42.6308 7.78386 40.0561 6.56098 37.2093C5.33811 34.3626 4.69443 31.3008 4.66751 28.2026C4.64058 25.1044 5.23096 22.0319 6.40418 19.1643C7.5774 16.2967 9.30997 13.6915 11.5008 11.5007C13.6916 9.30985 16.2968 7.57728 19.1644 6.40406C22.032 5.23084 25.1045 4.64046 28.2027 4.66738C31.3009 4.69431 34.3627 5.33799 37.2095 6.56086C40.0562 7.78374 42.6309 9.56132 44.7834 11.7899C49.0337 16.1906 51.3856 22.0847 51.3324 28.2026C51.2793 34.3205 48.8253 40.1728 44.4991 44.499C40.1729 48.8252 34.3206 51.2791 28.2027 51.3323C22.0848 51.3855 16.1907 49.0336 11.79 44.7832ZM21.2867 18.9532V37.6199H25.9534V18.9532H21.2867ZM30.62 18.9532V37.6199H35.2867V18.9532H30.62Z" fill="url(#paint0_linear_3435_23)"/>
+                                <defs>
+                                  <linearGradient id="paint0_linear_3435_23" x1="28" y1="4.6665" x2="28" y2="51.3332" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#58A589"/>
+                                    <stop offset="1" stop-color="#023422"/>
+                                  </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div onclick="nextTrack()">
+                            <svg id="next" xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
+                                <path d="M34.4958 31.2242V14.7337L34.4961 14.7322L34.4958 14.7307V14.6599H34.4887C34.4715 14.471 34.3856 14.2954 34.2478 14.1675C34.11 14.0395 33.9302 13.9684 33.7435 13.968C33.7346 13.968 33.7263 13.9704 33.7177 13.9707H32.3627C32.3416 13.9689 32.3212 13.9644 32.2995 13.9644C32.1 13.9644 31.9087 14.045 31.7676 14.1884C31.6265 14.3317 31.5472 14.5262 31.5472 14.7289C31.5472 14.7642 31.5528 14.7982 31.5575 14.8323V21.8061L21.6699 16.0049C21.5994 15.934 21.5101 15.8857 21.4129 15.8658C21.3157 15.8459 21.2149 15.8553 21.1229 15.8928C21.0309 15.9303 20.9517 15.9943 20.8951 16.077C20.8384 16.1597 20.8067 16.2574 20.804 16.3581H20.8022V20.9535L12.3674 16.0046C12.2969 15.9337 12.2076 15.8854 12.1104 15.8655C12.0132 15.8456 11.9124 15.855 11.8204 15.8925C11.7284 15.93 11.6492 15.994 11.5926 16.0767C11.5359 16.1594 11.5042 16.2571 11.5015 16.3578H11.5V29.627C11.5001 29.7299 11.5305 29.8304 11.5871 29.9157C11.6437 30.001 11.724 30.0673 11.8178 30.106C11.9116 30.1447 12.0147 30.1541 12.1138 30.1331C12.2129 30.112 12.3036 30.0614 12.3743 29.9877L20.8022 25.043V29.6273C20.8023 29.7302 20.8326 29.8307 20.8893 29.916C20.9459 30.0013 21.0262 30.0676 21.12 30.1063C21.2138 30.145 21.3169 30.1544 21.416 30.1334C21.5151 30.1123 21.6058 30.0617 21.6765 29.988L31.5575 24.1907V31.2372H31.5614C31.5608 31.2489 31.5578 31.2598 31.5578 31.2715C31.5579 31.474 31.637 31.6682 31.7778 31.8114C31.9185 31.9547 32.1095 32.0354 32.3087 32.0358H33.7476V32.0286C33.8464 32.0286 33.9443 32.0088 34.0355 31.9704C34.1268 31.9319 34.2098 31.8756 34.2796 31.8046C34.3495 31.7336 34.4049 31.6493 34.4427 31.5566C34.4805 31.4638 34.5 31.3644 34.5 31.264C34.4997 31.2501 34.4964 31.2375 34.4958 31.2242Z" fill="url(#paint0_linear_3449_162)"/>
+                                <defs>
+                                    <linearGradient id="paint0_linear_3449_162" x1="23" y1="13.9644" x2="23" y2="32.0358" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#58A589"/>
+                                    <stop offset="1" stop-color="#023422"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="audios">
-                <audio id="song">
-                    <source src="God Is An Astronaut - Beyond The Dying Light.mp3" type="audio/mpeg">
-                </audio>
-                <input type="range" id="progress" min="0" max="233.717551" value="0" onchange="changeProgressBar()">
-
-                <audio src="God Is An Astronaut - Forever Lost.mp3"></audio>
+                <input id="progress-bar" class="bar progress-bar" type="range" min="0" step="0.1" value="0">
+            <!-- 
+                <audio id="audio1" src="God Is An Astronaut - Beyond The Dying Light.mp3"></audio>
+                <audio id="audio2" src="jungle.mp3"></audio>
+                <audio id="audio3" src="God Is An Astronaut - Forever Lost.mp3"></audio>
+            -->
             </div>
-
-            <script>
-                let progress = document.getElementById("progress");
-                let song = document.getElementById("song");
-                let ctrlIcon = document.getElementById("ctrlIcon");
-                let pause = document.getElementById("pause");
-                let play = document.getElementById("play");
-                song.onloadedmetadata = function() {
-                    progress.max = song.duration;
-                    progress.value = song.currentTime;
-                }
-                function playPause() {
-                    if (ctrlIcon.classList.contains("pause")) {
-                        song.pause();
-                        play.classList.remove("d-none");
-                        pause.classList.add("d-none");
-                        ctrlIcon.classList.remove("pause");
-                        
-                    } else {
-                        song.play();
-                        pause.classList.remove("d-none");
-                        play.classList.add("d-none");
-                        ctrlIcon.classList.add("pause");
-                    }
-                }
-
-                if (song.play()) {
-                    setInterval(()=>{
-                        progress.value = song.currentTime;
-                    }, 500)
-                }
-
-                progress.onchange = function () {
-                    song.play();
-                    song.currentTime = progress.value;
-                    pause.classList.remove("d-none");
-                    play.classList.add("d-none");
-                    ctrlIcon.classList.add("pause");
-                }
-                console.log('Вёрстка +10\nКнопка Play/Pause +10\nПрогресс-бар +10\nOформлениe +10')
-
-            </script>
-            
             <div class="times">
-                <div class="time current-time">Current time</div>
-                <div class="time">Duration time</div>
-            </div>
-            
-            <div style="display: none;">
-                <input type="range" id="progress-bar1" min="0" max="233.717551" value="0" onchange="changeProgressBar()">
-                <input type="range" id="progress-bar2" min="0" max="233.717551" value="0" onchange="changeProgressBar()">
+                <div class="time current-time">00:00</div>
+                <div class="time duration-time">Duration time</div>
             </div>
         </div>
-        <footer>
-            <hr>
-            <div class="flex-btwn rss">
-                <p>2023</p>
-                <p><a href="https://rs.school/js-stage0/">The Rolling Scopes School</a></p>
-                <p><a href="https://github.com/IrinaGrom">IrinaGrom</a></p>
-            </div>
+        <footer class="rss">
+            <a href="https://github.com/IrinaGrom">IrinaGrom</a>
+            <p>2023</p>
+            <a href="https://rs.school/js-stage0/"><img src="logo.svg" alt="Rsschool Icon" class="rss-logo" width="100" height="38"></a>
         </footer>
     </div>
+
+    <script src="player.js"></script>
+  
 </body>
 </html>
